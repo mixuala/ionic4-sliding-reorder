@@ -7,39 +7,138 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>If you get lost, the
-    <a target="_blank" rel="noopener" href="https://ionicframework.com/docs">docs</a> will be your guide.</p>
-
 
   <h3>
       <ion-text color="primary">&lt;ion-reorder-group&gt; with &lt;ion-item-sliding&gt;</ion-text>
   </h3>
   <p>&lt;ion-item-sliding&gt; stops working for rows that have been reordered</p>
 
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col size="6"  style="background-color: lightgray;">
-        <ion-list id="sliding-list-1">
-          <ion-reorder-group disabled="false"
-            (ionItemReorder)="reorder($event)">
-            <ion-item-sliding *ngFor="let item of items"
-              (click)="close($event, item)">
-              <ion-item>
-                <ion-label>{{item}}</ion-label>
-                <ion-reorder slot="end"></ion-reorder>
-              </ion-item>
-              <ion-item-options>
-                <ion-item-option color="danger" slot="top" (click)="delete($event, item)">
-                  <ion-icon name="trash" slot="top"></ion-icon>
-                  <ion-label>Delete</ion-label>
-                </ion-item-option>
-              </ion-item-options>
-            </ion-item-sliding>
-          </ion-reorder-group>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+
+  <ng-container>
+    <ion-grid no-padding>
+      <ion-row>
+          <ion-col size="12">
+              <ion-toolbar text-center>
+                <ion-button color="tertiary" (click)="activate('1')">ion-list[*ngFor]</ion-button>
+                <ion-button color="success" (click)="activate('2')">ion-item-sliding[*ngFor]</ion-button>
+                <ion-button color="light" (click)="activate('3')">3</ion-button>
+              </ion-toolbar>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-sm="8" offset-sm="2" size-xl="6" offset-xl="3">
+            <ng-container  *ngIf="show=='1'">
+
+
+
+              <ion-reorder-group id="1" [disabled]="toggle.disabled['1']">
+                <ion-list *ngFor="let marker of cars$ | async">
+                  <ion-item-sliding *ngIf="!marker.hide">
+                    <ion-item color="tertiary">
+                      <ng-container>
+                        <ion-button class="as-thumbnail" slot="start" expand="full" size="large">
+                          <ion-icon name="pin" slot="start"></ion-icon>
+                        </ion-button>
+                      </ng-container>
+            
+                      <ion-label>
+                        <h3>{{ marker.label}}</h3>
+                      </ion-label>
+                      <ion-reorder slot="end"></ion-reorder>
+                    </ion-item>
+            
+                    <ion-item-options>
+                      <ion-item-option color="danger" slot="top" (click)="carsRemove(marker)">
+                        <ion-icon name="trash" slot="top"></ion-icon>
+                        <ion-label>Delete</ion-label>
+                      </ion-item-option>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </ion-list>
+              </ion-reorder-group>
+              
+              
+              
+              
+            </ng-container>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="8" offset-sm="2" size-xl="6" offset-xl="3">
+            <ng-container *ngIf="show=='2'">
+
+
+
+              <ion-list>
+                <ion-reorder-group id="2" [disabled]="toggle.disabled['2']">
+                  <ion-item-sliding *ngFor="let marker of animals$ | async">
+                    <ion-item color="success">
+                      <ion-button slot="start" expand="full" size="large" color="primary">
+                        <ion-icon name="add" slot="icon-only"></ion-icon>
+                      </ion-button>
+                      <ion-label>
+                        <h3>{{ marker}}</h3>
+                      </ion-label>
+                      <ion-reorder slot="end"></ion-reorder>
+                    </ion-item>
+            
+                    <ion-item-options>
+                      <ion-item-option color="danger" slot="top" (click)="animalsRemove(marker)">
+                        <ion-icon name="trash" slot="top"></ion-icon>
+                        <ion-label>Delete</ion-label>
+                      </ion-item-option>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </ion-reorder-group>
+              </ion-list>
+
+
+
+
+            </ng-container>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="8" offset-sm="2" size-xl="6" offset-xl="3">
+            <ng-container  *ngIf="show=='3'">
+
+
+
+
+            <ion-list id="sliding-list-1">
+                <ion-reorder-group id="3" [disabled]="toggle.disabled['3']">
+                  <ion-item-sliding *ngFor="let item of items; let i=index;"
+                    (click)="close($event, item)">
+                    <ion-item>
+                        <ion-thumbnail slot="start">
+                            <ion-img [src]="'https://picsum.photos/80?random='+i"></ion-img>
+                          </ion-thumbnail>
+                      <ion-label>
+                        <h3>{{item}}</h3>
+                        <p>{{item}}</p>
+                      </ion-label>
+                      <ion-reorder slot="end"></ion-reorder>
+                    </ion-item>
+                    <ion-item-options>
+                      <ion-item-option color="danger" slot="top" (click)="delete($event, item)">
+                        <ion-icon name="trash" slot="top"></ion-icon>
+                        <ion-label>Delete</ion-label>
+                      </ion-item-option>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </ion-reorder-group>
+              </ion-list>
+
+
+
+
+            </ng-container>
+        </ion-col>
+      </ion-row>
+    </ion-grid> 
+  </ng-container>   
+
+  <p>ion-reorder-group[disabled]={{toggle.disabled | json}}</p>
+
 
 </ion-content>
